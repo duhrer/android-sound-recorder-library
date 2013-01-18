@@ -71,7 +71,7 @@
 
 
 
-    <com.blogspot.tonyatkins.archetype.views.VolumeBarGraphView
+    <com.blogspot.tonyatkins.recorder.views.VolumeBarGraphView
         android:id="@+id/volumeBarGraphView"
         android:layout_width="fill_parent"
         android:layout_height="50dip"

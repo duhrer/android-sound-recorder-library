@@ -23,6 +23,6 @@
 
 -->
 <resources>
-    <string name="app_name">Simple Android Sound Recorder</string>
+    <string name="app_name">Sound Recorder</string>
     <string name="recorder_event_activity_label">Record a Sound</string>
 </resources>
