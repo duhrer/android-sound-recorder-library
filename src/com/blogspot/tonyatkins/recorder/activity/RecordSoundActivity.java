@@ -36,12 +36,15 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.blogspot.tonyatkins.recorder.Constants;
 import com.blogspot.tonyatkins.recorder.InstrumentedRecorder;
 import com.blogspot.tonyatkins.recorder.R;
+import com.blogspot.tonyatkins.recorder.views.RecorderTimerView;
 import com.blogspot.tonyatkins.recorder.views.VolumeBarGraphView;
 
 public class RecordSoundActivity extends Activity {
@@ -52,19 +55,22 @@ public class RecordSoundActivity extends Activity {
 	
 	private InstrumentedRecorder recorder = new InstrumentedRecorder();
 	private MediaPlayer mediaPlayer = new MediaPlayer();
-	private TextView recordingStatus;
-	private Button recordButton;
-	private Button playButton;
-	private Button stopButton;
+	private TextView recordingStatusText;
+	private ImageButton recordButton;
+	private ImageButton playButton;
+	private ImageButton stopButton;
 	private Button saveButton;
 	private Button cancelButton;
 	private String soundFilePath; 
 	private String soundFileName = "new-file";
 	private Context context = this;
+
+	private LinearLayout recordingStatusButtonBlock;
 	
 	static final String RECORDING_BUNDLE = "recordingBundle";
 
-	public static final String FILE_NAME_KEY = "record-sound-filename";
+	public static final String FILE_NAME_KEY  = "record-sound-filename";
+	public static final String OUTPUT_DIR_KEY = "output-dir";
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -75,16 +81,23 @@ public class RecordSoundActivity extends Activity {
 		mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-		Bundle parentBundle = getIntent().getExtras();
+        String soundDirectory = Constants.SOUND_DIRECTORY;
+        Bundle parentBundle = getIntent().getExtras();
+        
 		if (parentBundle != null) {
 			// try to figure out the filename from the bundle
-			String bundleLabel = parentBundle.getString(FILE_NAME_KEY);
-			if (bundleLabel != null && bundleLabel.length() > 0) {
-				soundFileName = sanitizeFileName(bundleLabel);
+			String bundleFilename = parentBundle.getString(FILE_NAME_KEY);
+			if (bundleFilename != null && bundleFilename.length() > 0) {
+				soundFileName = sanitizeFileName(bundleFilename);
+			}
+			
+			String bundleOutputDir = parentBundle.getString(OUTPUT_DIR_KEY);
+			if (bundleOutputDir != null && bundleOutputDir.length() > 0) {
+				soundDirectory = bundleOutputDir;
 			}
 		}
 		
-		File soundDir = new File(Constants.SOUND_DIRECTORY);
+		File soundDir = new File(soundDirectory);
 		if (!soundDir.exists()) {
 			if (soundDir.mkdirs()) {
 				Log.d(Constants.TAG, "Created sound directory.");
@@ -94,7 +107,7 @@ public class RecordSoundActivity extends Activity {
 			}
 		}
 		
-		soundFilePath = Constants.SOUND_DIRECTORY + "/" + soundFileName + ".mp4";
+		soundFilePath = soundDirectory + "/" + soundFileName + ".mp4";
 		
 		// check to see if there's an existing file name and add a numeral until there's no conflict.
 		File soundFile = new File(soundFilePath);
@@ -125,25 +138,26 @@ public class RecordSoundActivity extends Activity {
 			finish();
 		}
 		
-		// A quick and dirty status text view to let us know what's going on
-		// FIXME:  Replace this with an equalizer for sound levels, a time code, something more dynamic
-		recordingStatus = (TextView) findViewById(R.id.RecordingStatus);
-		recordingStatus.setText("No sound data.  Press 'Record' to start recording.");
 
+		recordingStatusButtonBlock = (LinearLayout) findViewById(R.id.RecordingStatusButtonBlock);
+		recordingStatusButtonBlock.setVisibility(View.INVISIBLE);
+		recordingStatusText = (TextView) findViewById(R.id.RecordingStatusText);
+		recordingStatusText.setText("No sound data.  Press 'Record' to start recording.");
+
+		RecorderTimerView timerView = (RecorderTimerView) findViewById(R.id.timerView);
+		timerView.setRecorder(recorder);
 		
 		VolumeBarGraphView volumeBarGraphView = (VolumeBarGraphView) findViewById(R.id.volumeBarGraphView);
 		volumeBarGraphView.setRecorder(recorder);
 		
 		// Grab the handles of our buttons
-		playButton = (Button) findViewById(R.id.play_button);
+		playButton = (ImageButton) findViewById(R.id.play_button);
+		stopButton = (ImageButton) findViewById(R.id.stop_button);
 		
-		stopButton = (Button) findViewById(R.id.stop_button);
-		
-		saveButton = (Button) findViewById(R.id.edit_sound_save);
-		
-		recordButton = (Button) findViewById(R.id.record_button);
+		recordButton = (ImageButton) findViewById(R.id.record_button);
 		recordButton.setOnClickListener(new StartRecordingListener());
 		
+		saveButton = (Button) findViewById(R.id.edit_sound_save);
 		cancelButton = (Button) findViewById(R.id.edit_sound_cancel);
 		cancelButton.setOnClickListener(new CancelListener());
 	}
@@ -154,7 +168,7 @@ public class RecordSoundActivity extends Activity {
 
 	private class StartRecordingListener implements OnClickListener {
 		public void onClick(View v) {
-			recordingStatus.setText("Now recording.  Press 'Stop' or 'Record' to stop recording.");
+			recordingStatusButtonBlock.setVisibility(View.INVISIBLE);
 			// disable the play and save buttons
 			playButton.setOnClickListener(null);
 			saveButton.setOnClickListener(null);
@@ -170,7 +184,7 @@ public class RecordSoundActivity extends Activity {
 				recorder.prepare();
 				recorder.start();
 			} catch (Exception e) {
-				recordingStatus.setText("Can't start recorder:" + e.getMessage());
+				recordingStatusText.setText("Can't start recorder:" + e.getMessage());
 				Log.e(getClass().toString(), "Can't start recorder:", e);
 			}
 		}
@@ -191,9 +205,10 @@ public class RecordSoundActivity extends Activity {
 					mediaPlayer.prepare();
 
 					playButton.setOnClickListener(new PlayRecordingListener());
-					recordingStatus.setText("Recorded " + mediaPlayer.getDuration()/1000d + " seconds of audio.  Press 'Play' to preview or 'Save' to finish.");
+					recordingStatusText.setText("Recorded " + mediaPlayer.getDuration()/1000d + " seconds of audio.  Press 'Record' to start again, 'Play' to preview, 'Save' to finish, or 'Cancel' to exit.");
+					recordingStatusButtonBlock.setVisibility(View.VISIBLE);
 				} catch (Exception e) {
-					recordingStatus.setText("Can't setup preview playback:" + e.getMessage());
+					recordingStatusText.setText("Can't setup preview playback:" + e.getMessage());
 					Log.e(getClass().toString(), "Can't setup preview playback:", e);
 				}
 			} catch (Exception e) {
@@ -212,7 +227,7 @@ public class RecordSoundActivity extends Activity {
 				
 				mediaPlayer.start();
 				
-				recordingStatus.setText("Previewing audio. Press 'Stop' to finish preview.");
+				recordingStatusText.setText("Previewing audio. Press 'Stop' to finish preview.");
 				// wire up the stop button
 				stopButton.setOnClickListener(new StopPlaybackListener());
 				

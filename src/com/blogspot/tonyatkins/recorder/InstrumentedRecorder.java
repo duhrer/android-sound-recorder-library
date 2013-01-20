@@ -28,6 +28,8 @@ import android.media.MediaRecorder;
 
 public class InstrumentedRecorder extends MediaRecorder {
 	private int state = IDLE_STATE;
+
+	private long startTime;
 	
 	public static final int IDLE_STATE = 0;
     public static final int RECORDING_STATE = 1;
@@ -41,6 +43,7 @@ public class InstrumentedRecorder extends MediaRecorder {
     @Override
     public void start() throws IllegalStateException {
     	state=RECORDING_STATE;
+    	startTime = System.currentTimeMillis();
     	super.start();
     	super.getMaxAmplitude();
     }
@@ -54,4 +57,14 @@ public class InstrumentedRecorder extends MediaRecorder {
 	public int getState() {
 		return state;
 	}
+	
+    public float progress() {
+        if (state == RECORDING_STATE) {
+        	return (float) ((System.currentTimeMillis() - startTime)/1000);
+        }
+        
+        return 0F;
+    }
+    
+
 }

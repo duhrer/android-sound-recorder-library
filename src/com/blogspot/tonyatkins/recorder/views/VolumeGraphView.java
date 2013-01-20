@@ -45,7 +45,8 @@ import com.blogspot.tonyatkins.recorder.InstrumentedRecorder;
  */
 public class VolumeGraphView extends View {
 	private static final float MAX_POSSIBLE_AMPLITUDE = 32768F;
-	private static final long REFRESH_INTERVAL = 70;
+	private static final long LIVE_REFRESH_INTERVAL = 70;
+	private static final long IDLE_REFRESH_INTERVAL = 1000;
     static final float DROPOFF_STEP = 0.14f;
 	private InstrumentedRecorder recorder;
 	private List<Float> dataPoints = new ArrayList<Float>();
@@ -92,8 +93,11 @@ public class VolumeGraphView extends View {
 		if (recorder != null && recorder.getState() == InstrumentedRecorder.RECORDING_STATE) {
 			//Update the data before redrawing
 			updateDataPoints();
-			postInvalidateDelayed(REFRESH_INTERVAL);
+			postInvalidateDelayed(LIVE_REFRESH_INTERVAL);
 		}		
+		else {
+			postInvalidateDelayed(IDLE_REFRESH_INTERVAL);
+		}
 
 		// Fill the background with the background color
 		canvas.drawRect(0, 0, maxX, canvas.getHeight(), blackFillPaint);

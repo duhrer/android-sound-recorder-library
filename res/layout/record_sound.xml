@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-
     Copyright 2013 Tony Atkins <duhrer@gmail.com>. All rights reserved.
 
     Redistribution and use in source and binary forms, with or without modification, are
@@ -21,96 +20,100 @@
     SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
     ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
     NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
-
 -->
 <!-- FIXME: Migrate all text to strings.xml for internationalization. -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/record_sound"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
-    <TextView
-        android:id="@+id/TextView01"
-        android:layout_width="wrap_content"
+    <com.blogspot.tonyatkins.recorder.views.RecorderTimerView
+        android:id="@+id/timerView"
+        style="@android:style/TextAppearance.Large"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Record a Sound" >
-    </TextView>
+        android:layout_alignWithParentIfMissing="true"
+        android:gravity="center"
+        android:text="00:00.00"
+        android:textSize="72dip" />
 
     <LinearLayout
         android:id="@+id/LinearLayout01"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2" >
+        android:layout_height="50dip"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true" >
 
-        <Button
+        <ImageButton
             android:id="@+id/record_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Record" >
-        </Button>
+            android:background="@android:drawable/btn_default"
+            android:src="@drawable/record" />
 
-        <Button
+        <ImageButton
             android:id="@+id/play_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Play" >
-        </Button>
+            android:background="@android:drawable/btn_default"
+            android:src="@android:drawable/ic_media_play" />
 
-        <Button
+        <ImageButton
             android:id="@+id/stop_button"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_weight="1"
-            android:text="Stop" >
-        </Button>
+            android:background="@android:drawable/btn_default"
+            android:src="@drawable/stop" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/RecordingStatusBlock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/LinearLayout01"
+        android:layout_margin="10dip"
+        android:background="@drawable/grayoutline"
+        android:orientation="vertical"
+        android:padding="5dip" >
 
+        <TextView
+            android:id="@+id/RecordingStatusText"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:id="@+id/RecordingStatusButtonBlock"
+            android:visibility="invisible"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" >
+
+            <Button
+                android:id="@+id/edit_sound_cancel"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Cancel" />
+
+            <Button
+                android:id="@+id/edit_sound_save"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save" />
+        </LinearLayout>
+    </LinearLayout>
 
     <com.blogspot.tonyatkins.recorder.views.VolumeBarGraphView
         android:id="@+id/volumeBarGraphView"
         android:layout_width="fill_parent"
-        android:layout_height="50dip"
+        android:layout_height="100dip"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dip"
         android:layout_weight="1" />
 
-    <TextView
-        android:id="@+id/RecordingStatus"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-    </TextView>
-
-    <MediaController
-        android:id="@+id/MediaController01"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1" >
-    </MediaController>
-
-    <LinearLayout
-        android:id="@+id/LinearLayout02"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" >
-
-        <Button
-            android:id="@+id/edit_sound_cancel"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Cancel" >
-        </Button>
-
-        <Button
-            android:id="@+id/edit_sound_save"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save" >
-        </Button>
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

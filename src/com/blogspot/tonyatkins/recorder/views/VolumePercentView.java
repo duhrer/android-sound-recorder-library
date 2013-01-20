@@ -37,23 +37,24 @@ import com.blogspot.tonyatkins.recorder.InstrumentedRecorder;
  * This view cannot be used reliably in the same layout as another instance of itself or the VolumeGraphView or VolumeBarGraph views.
  *
  */
-public class VolumeTextView extends TextView {
+public class VolumePercentView extends TextView {
 	private static final float MAX_POSSIBLE_AMPLITUDE = 32768F;
-	private static final long REFRESH_INTERVAL = 100;
+	private static final long IDLE_REFRESH_INTERVAL = 1000;
+	private static final long LIVE_REFRESH_INTERVAL = 100;
 	private int volumePercentage = 0;
 	private InstrumentedRecorder recorder;
 	
-	public VolumeTextView(Context context, AttributeSet attrs, int defStyle) {
+	public VolumePercentView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
 		setPercentageText();
 	}
 
-	public VolumeTextView(Context context, AttributeSet attrs) {
+	public VolumePercentView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		setPercentageText();
 	}
 
-	public VolumeTextView(Context context) {
+	public VolumePercentView(Context context) {
 		super(context);
 		setPercentageText();
 	}
@@ -74,8 +75,11 @@ public class VolumeTextView extends TextView {
 	protected void onDraw(Canvas canvas) {
 		if (recorder != null && recorder.getState() == InstrumentedRecorder.RECORDING_STATE) {
 			setPercentageText();
-			postInvalidateDelayed(REFRESH_INTERVAL);
+			postInvalidateDelayed(LIVE_REFRESH_INTERVAL);
 		}		
+		else {
+			postInvalidateDelayed(IDLE_REFRESH_INTERVAL);
+		}
 		super.onDraw(canvas);
 	}
 }

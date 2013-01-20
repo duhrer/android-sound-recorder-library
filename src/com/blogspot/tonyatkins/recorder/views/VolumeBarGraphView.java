@@ -44,6 +44,7 @@ import android.view.View;
 public class VolumeBarGraphView extends View {
 	private static final float MAX_POSSIBLE_AMPLITUDE = 32768F;
 	private static final long REFRESH_INTERVAL = 100;
+	private static final long IDLE_REFRESH_INTERVAL = 1000;
     static final float DROPOFF_STEP = 20f;
 	private int volumePercentage = 0;
 	private InstrumentedRecorder recorder;
@@ -100,6 +101,9 @@ public class VolumeBarGraphView extends View {
 		{
 			setPercentage();
 			postInvalidateDelayed(REFRESH_INTERVAL);
+		}
+		else {
+			postInvalidateDelayed(IDLE_REFRESH_INTERVAL);
 		}
 
 		int minX = getLeftPaddingOffset() + 1;
