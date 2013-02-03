@@ -75,7 +75,7 @@
 		        		<license.user.email>duhrer@gmail.com</license.user.email>
 		        		<license.year>2013</license.year>
 		        	</properties>
-		            <header>src/etc/license-header.txt</header>
+		            <header>src/etc/recorder-license-header.txt</header>
 		        </configuration>
 		    </plugin>
 		</plugins>
