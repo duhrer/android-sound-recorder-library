@@ -1,11 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.blogspot.tonyatkins</groupId>
-    <artifactId>recorder</artifactId>
-    <version>1.0</version>
-    <packaging>apk</packaging>
-    <name>Simple Android Sound Recorder</name>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.blogspot.tonyatkins</groupId>
+	<artifactId>recorder</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>apklib</packaging>
+	<name>Simple Android Sound Recorder</name>
+	<description>A simple library to add an image cropping activity to an Android project.</description>
+	<url>https://bitbucket.org/duhrer/android-image-cropping-library</url>
+	<licenses>
+		<license>
+			<name>The FreeBSD Copyright</name>
+			<url>http://www.freebsd.org/copyright/freebsd-license.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<scm>
+		<url>https://duhrer@bitbucket.org/duhrer/android-sound-recorder-library.git</url>
+		<connection>scm:git:https://duhrer@bitbucket.org/duhrer/android-sound-recorder-library.git</connection>
+		<developerConnection>scm:git:https://duhrer@bitbucket.org/duhrer/android-sound-recorder-library.git</developerConnection>
+	</scm>
+
+	<distributionManagement>
+		<repository>
+			<id>sonatype-nexus-staging</id>
+			<name>Sonatype Nexus Staging</name>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+		<snapshotRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
 
 	<developers>
 		<developer>
@@ -14,83 +43,94 @@
 			<email>duhrer@gmail.com</email>
 		</developer>
 	</developers>
-	
-	<scm>
-		<connection>scm:git:https://duhrer@bitbucket.org/duhrer/android-sound-recorder-library.git</connection>
-		<url>https://duhrer@bitbucket.org/duhrer/android-sound-recorder-library.git</url>
-	</scm>
-	
-    <properties>
-    	<android.api.version>7</android.api.version>
-    	<android.avd.device.name>Gingerbread</android.avd.device.name>
-    	<android.version>2.1_r1</android.version>
-    </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.google.android</groupId>
-            <artifactId>android</artifactId>
-            <version>${android.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <sourceDirectory>src</sourceDirectory>
-        <plugins>
-            <plugin>
-                <groupId>com.jayway.maven.plugins.android.generation2</groupId>
-                <artifactId>maven-android-plugin</artifactId>
-                <version>2.8.4</version>
-                <configuration>
-                    <sdk>
-                        <!-- platform or api level (api level 4 = platform 1.6)-->
-                        <platform>${android.api.version}</platform>
-                    </sdk>
-                    <emulator>
-                        <!-- the name of the avd device to use for starting the emulator -->
-                        <avd>${android.avd.device.name}</avd>
-                    </emulator>
-                    <undeployBeforeDeploy>true</undeployBeforeDeploy>
-                </configuration>
-                <extensions>true</extensions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <!-- version 2.3 defaults to java 1.5, so no further configuration needed-->
-                <version>2.3</version>
-            </plugin>
-		    <plugin>
-		        <groupId>com.mycila.maven-license-plugin</groupId>
-		        <artifactId>maven-license-plugin</artifactId>
-		        <configuration>
-		        	<excludes>
-		        		<exclude>bin/**</exclude>
-		        		<exclude>gen/**</exclude>
-		        		<exclude>.hgignore</exclude>
-		        	</excludes>
-		        	<properties>
-		        		<license.user.name>Tony Atkins</license.user.name>
-		        		<license.user.email>duhrer@gmail.com</license.user.email>
-		        		<license.year>2013</license.year>
-		        	</properties>
-		            <header>src/etc/recorder-license-header.txt</header>
-		        </configuration>
-		    </plugin>
+	<properties>
+		<android.api.version>11</android.api.version>
+		<android.avd.device.name>Gingerbread</android.avd.device.name>
+		<android.version>2.1_r1</android.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android</artifactId>
+			<version>${android.version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<finalName>${project.artifactId}</finalName>
+		<sourceDirectory>src</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<version>3.5.1</version>
+				<configuration>
+					<sdk>
+						<!-- platform or api level (api level 4 = platform 1.6) -->
+						<platform>${android.api.version}</platform>
+					</sdk>
+					<emulator>
+						<!-- the name of the avd device to use for starting the emulator -->
+						<avd>${android.avd.device.name}</avd>
+					</emulator>
+					<undeployBeforeDeploy>true</undeployBeforeDeploy>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<!-- version 2.3 defaults to java 1.5, so no further configuration needed -->
+				<version>2.3</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.4</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila.maven-license-plugin</groupId>
+				<artifactId>maven-license-plugin</artifactId>
+				<version>1.9.0</version>
+				<configuration>
+					<excludes>
+						<exclude>bin/**</exclude>
+						<exclude>gen/**</exclude>
+						<exclude>.hgignore</exclude>
+					</excludes>
+					<properties>
+						<license.user.name>Tony Atkins</license.user.name>
+						<license.user.email>duhrer@gmail.com</license.user.email>
+						<license.year>2013</license.year>
+					</properties>
+					<header>src/etc/recorder-license-header.txt</header>
+				</configuration>
+			</plugin>
 		</plugins>
-    </build>
-    <pluginRepositories>
-	    <pluginRepository>
-		    <id>mc-release</id>
-		    <name>Local Maven repository of releases</name>
-		    <url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
-		    <snapshots>
-		        <enabled>false</enabled>
-		    </snapshots>
-		    <releases>
-		        <enabled>true</enabled>
-		    </releases>
+	</build>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>mc-release</id>
+			<name>Local Maven repository of releases</name>
+			<url>http://mc-repo.googlecode.com/svn/maven2/releases</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</pluginRepository>
-    </pluginRepositories>
+	</pluginRepositories>
 </project>
