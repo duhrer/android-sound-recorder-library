@@ -44,9 +44,8 @@
 	</developers>
 
 	<properties>
-		<android.api.version>8</android.api.version>
-		<android.avd.device.name>Gingerbread</android.avd.device.name>
-		<android.version>2.1_r1</android.version>
+		<android.api.version>11</android.api.version>
+		<android.version>4.0.1.2</android.version>
 	</properties>
 
 	<dependencies>
