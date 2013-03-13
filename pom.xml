@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.blogspot.tonyatkins</groupId>
 	<artifactId>recorder</artifactId>
-	<version>1.0</version>
+	<version>1.1-SNAPSHOT</version>
 	<packaging>apklib</packaging>
 	<name>Simple Android Sound Recorder</name>
 	<description>A simple library to add sound recording activity to an Android project.</description>
