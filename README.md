@@ -16,7 +16,7 @@ If you want to see all of this wired together in a real project, check out the s
 
 In your Android project, you will need to add the dependency to any modules that use the sound recorder library.  You do this by editing the module (and not the project) `build.gradle` file and updating your `dependencies` block, as in this example:
 
-    ::: json
+    :::json
     dependencies {
         compile 'com.blogspot.tonyatkins:recorder:2.0.1'
     }
@@ -29,7 +29,7 @@ If you want to see the list of available versions, check out either the Maven Ce
 
 You will need to define the (external) activity in your `AndroidManifest.xml` file, as follows:
 
-    ::: xml
+    :::xml
     <!--
             Sound Recorder activity, which requires the following external library project:
                                  https://bitbucket.org/duhrer/android-sound-recorder-library
