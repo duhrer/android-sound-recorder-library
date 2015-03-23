@@ -1,0 +1,79 @@
+apply plugin: 'com.android.library'
+android {
+    compileSdkVersion 11
+    buildToolsVersion "21.1.2"
+
+    defaultConfig {
+        minSdkVersion 8
+        targetSdkVersion 15
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+
+apply plugin: 'maven'
+apply plugin: 'signing'
+
+version = "2.0.1"
+group = "com.blogspot.tonyatkins"
+
+configurations {
+    archives {
+        extendsFrom configurations.default
+    }
+}
+
+signing {
+    required { has("release") && gradle.taskGraph.hasTask("uploadArchives") }
+    sign configurations.archives
+}
+
+uploadArchives {
+    configuration = configurations.archives
+    repositories.mavenDeployer {
+        beforeDeployment {
+            MavenDeployment deployment -> signing.signPom(deployment)
+        }
+
+        repository(url: sonatypeRepo) {
+            authentication(userName: sonatypeUsername,
+                    password: sonatypePassword)
+        }
+
+        pom.project {
+            name 'Simple Android Sound Recorder'
+            packaging 'aar'
+            description 'A simple library to add sound recording activity to an Android project.'
+            url 'https://bitbucket.org/duhrer/android-sound-recorder-library'
+
+            scm {
+                url 'https://bitbucket.org/duhrer/android-sound-recorder-library'
+                connection 'scm:git:https://bitbucket.org/duhrer/android-sound-recorder-library'
+                developerConnection 'scm:git:https://bitbucket.org/duhrer/android-sound-recorder-library'
+            }
+
+            licenses {
+                license {
+                    name 'The FreeBSD Copyright'
+                    url 'http://www.freebsd.org/copyright/freebsd-license.html'
+                    distribution 'repo'
+                }
+            }
+            developers {
+                developer {
+                    id 'duhrer'
+                    name 'Tony Atkins'
+                    email 'duhrer@gmail.com'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+}
