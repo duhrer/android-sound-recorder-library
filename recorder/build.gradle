@@ -19,7 +19,7 @@ android {
 apply plugin: 'maven'
 apply plugin: 'signing'
 
-version = "2.0.1"
+version = "2.0.2"
 group = "com.blogspot.tonyatkins"
 
 configurations {
@@ -59,7 +59,7 @@ uploadArchives {
 
             licenses {
                 license {
-                    name 'The FreeBSD Copyright'
+                    name 'BSD'
                     url 'http://www.freebsd.org/copyright/freebsd-license.html'
                     distribution 'repo'
                 }
