@@ -16,11 +16,10 @@ If you want to see all of this wired together in a real project, check out the s
 
 In your Android project, you will need to add the dependency to any modules that use the sound recorder library.  You do this by editing the module (and not the project) `build.gradle` file and updating your `dependencies` block, as in this example:
 
-```
-dependencies {
-    compile 'com.blogspot.tonyatkins:recorder:2.0.1'
-}
-```
+    ::: json
+    dependencies {
+        compile 'com.blogspot.tonyatkins:recorder:2.0.1'
+    }
 
 This library is published as an AAR file to [Maven Central](http://search.maven.org/#search%7Cga%7C1%7Ca%3A%22recorder%22) and [jCenter](https://bintray.com/bintray/jcenter/com.blogspot.tonyatkins%3Arecorder/).  Once you've added the dependency, it should be available in your project as soon as you clean and rebuild the project.
 
@@ -30,24 +29,22 @@ If you want to see the list of available versions, check out either the Maven Ce
 
 You will need to define the (external) activity in your `AndroidManifest.xml` file, as follows:
 
-```
-<!--
-        Sound Recorder activity, which requires the following external library project:
-                             https://bitbucket.org/duhrer/android-sound-recorder-library
--->
-<activity
-    android:name="com.blogspot.tonyatkins.recorder.activity.RecordSoundActivity"
-    android:exported="false"
-    android:icon="@drawable/icon"
-    android:label="@string/app_name" >
-    <intent-filter>
-        <action android:name="android.provider.MediaStore.RECORD_SOUND" />
+    ::: xml
+    <!--
+            Sound Recorder activity, which requires the following external library project:
+                                 https://bitbucket.org/duhrer/android-sound-recorder-library
+    -->
+    <activity
+        android:name="com.blogspot.tonyatkins.recorder.activity.RecordSoundActivity"
+        android:exported="false"
+        android:icon="@drawable/icon"
+        android:label="@string/app_name" >
+        <intent-filter>
+            <action android:name="android.provider.MediaStore.RECORD_SOUND" />
 
-        <category android:name="android.intent.category.DEFAULT" />
-    </intent-filter>
-</activity>
-
-```
+            <category android:name="android.intent.category.DEFAULT" />
+        </intent-filter>
+    </activity>
 
 Note that you can choose the label and icon, in this example I have picked up the standard icon and app name for my existing project.  thus, when a user presses the "record" button, they simply see that my application can handle the recording for them.  They never have to know that they're using this library at all... :)
 
@@ -59,10 +56,9 @@ To be able to see this library in action, you also need to launch an intent whos
 
 The only option that the recorder supports is setting the filename, as in this example:
 
-```
-Intent recordSoundIntent = new Intent(this, RecordSoundActivity.class);
-recordSoundIntent.putExtra(RecordSoundActivity.FILE_NAME_KEY, tempButton.getLabel());
-```
+    :::java
+    Intent recordSoundIntent = new Intent(this, RecordSoundActivity.class);
+    recordSoundIntent.putExtra(RecordSoundActivity.FILE_NAME_KEY, tempButton.getLabel());
 
 # Contributing
 
